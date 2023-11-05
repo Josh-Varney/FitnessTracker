@@ -1,32 +1,30 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:path/path.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_log/button_forget.dart';
-import 'package:flutter_log/login_tile.dart';
-import 'package:flutter_log/logo_tile.dart';
-import 'package:flutter_log/text_fields.dart';
+import 'package:flutter_log/ui_components/button_forget.dart';
+import 'package:flutter_log/ui_components/login_tile.dart';
+import 'package:flutter_log/ui_components/logo_tile.dart';
+import 'package:flutter_log/ui_components/text_fields.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPage();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPage extends State<RegisterPage> {
   // Text Editing Controller
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
 
-  // Sign User In
-  void signUserIn() async {
+  final confirmPasswordController = TextEditingController();
+  // Sign User Up
+  void signUserUp() async {
     // Loading Circle
     showDialog(
-      context: this.context,
+      context: context,
       builder: (context) {
         return const Center(
           child: CircularProgressIndicator(),
@@ -36,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
 
     void showErrorMessage(String message) {
       showDialog(
-          context: this.context,
+          context: context,
           builder: (context) {
             return const AlertDialog(
               title: Text("Incorrect Email Address"),
@@ -45,14 +43,19 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      Navigator.pop(this.context);
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } else {
+        showErrorMessage("Passwords do not match");
+      }
+
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       // Pop Context
-      Navigator.pop(this.context);
+      Navigator.pop(context);
       // Wrong Username
       showErrorMessage(e.code);
     }
@@ -69,15 +72,15 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment:
                   MainAxisAlignment.center, //Aligned for iOS phones
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 // Logo Textfield
                 const LogoTiling(
                     imagePath: 'lib/fitnessImage/fitnessLogo.jpeg'),
 
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
 
                 Text(
-                  'Welcome Back you\'ve been missed',
+                  'Let\'s create your account!',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -104,27 +107,18 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 10),
 
-                // Forgot Password
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
+                MyTextField(
+                  control: confirmPasswordController,
+                  hintText: 'Confirm Password',
+                  obscureText: true,
                 ),
 
                 const SizedBox(height: 25),
 
                 // Sign in Buttons
                 ButtonForget(
-                  onTap: signUserIn,
-                  text: 'Sign In',
+                  onTap: signUserUp,
+                  text: 'Sign Up',
                 ),
 
                 const SizedBox(height: 50),
@@ -181,14 +175,14 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Not a member',
+                      'Already have an account?',
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: widget.onTap,
                       child: const Text(
-                        'Register now',
+                        'Login Now',
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,

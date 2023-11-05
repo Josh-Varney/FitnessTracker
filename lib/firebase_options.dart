@@ -66,7 +66,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '80241012509',
     projectId: 'logpage-9aeb7',
     storageBucket: 'logpage-9aeb7.appspot.com',
-    iosClientId: '80241012509-e3giqdp43o3q38mv8imnq904k9o5cct0.apps.googleusercontent.com',
+    iosClientId:
+        '80241012509-e3giqdp43o3q38mv8imnq904k9o5cct0.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterLog',
   );
 
@@ -76,7 +77,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '80241012509',
     projectId: 'logpage-9aeb7',
     storageBucket: 'logpage-9aeb7.appspot.com',
-    iosClientId: '80241012509-hpp55vrb0trvkrbpj6ljvp5or9l23q61.apps.googleusercontent.com',
+    iosClientId:
+        '80241012509-hpp55vrb0trvkrbpj6ljvp5or9l23q61.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterLog.RunnerTests',
   );
 }
