@@ -13,7 +13,7 @@ class AboutUsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              height: MediaQuery.of(context).size.height * 0.281,
+              height: MediaQuery.of(context).size.height * 0.25,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.purple, Colors.deepPurple],
@@ -24,7 +24,7 @@ class AboutUsPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 25),
                     CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.purple[700],
@@ -37,7 +37,7 @@ class AboutUsPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 0),
                     const Text(
                       'Fitness Tracker',
                       style: TextStyle(
@@ -55,7 +55,7 @@ class AboutUsPage extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),
@@ -97,8 +97,8 @@ class AboutUsPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      const Wrap(
-                        alignment: WrapAlignment.spaceEvenly,
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           FeatureCard(
                               icon: Icons.fitness_center,
@@ -116,9 +116,11 @@ class AboutUsPage extends StatelessWidget {
                           onPressed: () {
                             // Add functionality for your button
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.deepPurple,
