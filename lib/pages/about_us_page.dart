@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_log/pages/home_page.dart';
 
 class AboutUsPage extends StatelessWidget {
   const AboutUsPage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class AboutUsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              height: MediaQuery.of(context).size.height * 0.29,
+              height: MediaQuery.of(context).size.height * 0.281,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.purple, Colors.deepPurple],
@@ -21,12 +22,12 @@ class AboutUsPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 40),
                     CircleAvatar(
                       radius: 50,
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: Colors.purple[700],
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.asset(
@@ -114,6 +115,10 @@ class AboutUsPage extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             // Add functionality for your button
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.deepPurple,
@@ -131,8 +136,7 @@ class AboutUsPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                          height: 10), // Added extra space at the bottom
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),
