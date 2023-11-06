@@ -12,25 +12,32 @@ class AboutUsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              height: MediaQuery.of(context).size.height * 0.25,
+              height: MediaQuery.of(context).size.height * 0.29,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.purple, Colors.deepPurple],
                 ),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage:
-                          AssetImage('lib/fitnessImage/fitnessLogo.jpeg'),
+                      backgroundColor: Colors.deepPurple,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          'lib/fitnessImage/fitnessLogo.jpeg',
+                          width: 50,
+                          height: 50,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 8),
-                    Text(
+                    const SizedBox(height: 2),
+                    const Text(
                       'Fitness Tracker',
                       style: TextStyle(
                         fontSize: 20,
@@ -38,8 +45,8 @@ class AboutUsPage extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 8),
-                    Text(
+                    const SizedBox(height: 10),
+                    const Text(
                       'Your personal fitness companion',
                       style: TextStyle(
                         fontSize: 14,
@@ -47,14 +54,15 @@ class AboutUsPage extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(15.0),
               child: Card(
-                elevation: 20,
+                elevation: 25,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -63,7 +71,7 @@ class AboutUsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 25),
                       const Text(
                         'About Us',
                         style: TextStyle(
@@ -71,14 +79,15 @@ class AboutUsPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
                       const Text(
                         'Welcome to Fitness Tracker, your go-to app for achieving and maintaining a healthy lifestyle. '
                         'Our team is dedicated to providing you with a comprehensive fitness experience, combining personalized tracking, '
-                        'engaging workouts, and a vibrant community that motivates and inspires.',
+                        'engaging workouts, and a vibrant community that motivates and inspires. \n\nNew updates and features will be introduced'
+                        ' to this application such as: Heat Maps, FAQs, Achievements, Challenges, Please get in contact to be a part of our Development Process',
                         style: TextStyle(fontSize: 14),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30),
                       const Text(
                         'Why Choose Us?',
                         style: TextStyle(
@@ -86,13 +95,13 @@ class AboutUsPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                       const Wrap(
                         alignment: WrapAlignment.spaceEvenly,
                         children: [
                           FeatureCard(
                               icon: Icons.fitness_center,
-                              title: 'Personalized Workouts'),
+                              title: 'Personalised Workouts'),
                           FeatureCard(
                               icon: Icons.timeline,
                               title: 'Insightful Analytics'),
@@ -100,28 +109,30 @@ class AboutUsPage extends StatelessWidget {
                               icon: Icons.group, title: 'Supportive Community'),
                         ],
                       ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Add functionality for your button
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                      const SizedBox(height: 40),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Add functionality for your button
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                           ),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Text(
-                            'Get Started',
-                            style: TextStyle(fontSize: 16),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Text(
+                              'Get Started',
+                              style: TextStyle(fontSize: 16),
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(
-                          height: 20), // Added extra space at the bottom
+                          height: 10), // Added extra space at the bottom
                     ],
                   ),
                 ),
