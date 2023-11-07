@@ -16,6 +16,18 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  DatabaseService databaseService = DatabaseService();
+
+  UserModel testUser = const UserModel(
+      firstName: 'Josh',
+      phoneNo: '0582948232',
+      weight: '70',
+      targetWeight: '70',
+      height: '42');
+
+  await databaseService.storeUserDetails(testUser);
+
   runApp(const MyApp());
 }
 
