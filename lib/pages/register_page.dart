@@ -1,5 +1,3 @@
-import 'package:flutter_log/data/flutterfire_database.dart';
-import 'package:flutter_log/pages/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_log/ui_components/button_forget.dart';

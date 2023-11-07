@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_log/data/flutterfire_database.dart';
+import 'package:flutter_log/models/profileCalc.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _ProfilePage extends State<ProfilePage>
   // Error Check and Change Physical Properties, Store in Database
   final nameController = TextEditingController();
   final bioContoller = TextEditingController();
+  final ageController = TextEditingController();
   final weightController = TextEditingController();
   final heightControler = TextEditingController();
   final desiredWeightController = TextEditingController();
@@ -24,6 +26,7 @@ class _ProfilePage extends State<ProfilePage>
   // Actual Text Controllers
   final actualName = TextEditingController();
   final actualBio = TextEditingController();
+  final actualAge = TextEditingController();
   final actualWeight = TextEditingController();
   final actualHeight = TextEditingController();
   final actualDesiredWeight = TextEditingController();
@@ -45,9 +48,26 @@ class _ProfilePage extends State<ProfilePage>
         // CHANGES THE STATES ON THE SCREEN
         actualName.text = userDetails['firstName'] ?? '';
         actualBio.text = userDetails['bio'] ?? '';
+        actualAge.text = userDetails['age'] ?? '';
+        String ageString = userDetails['age'];
+        String weightString = userDetails['weight'];
+        String heightString = userDetails['height'];
         actualWeight.text = userDetails['weight'] ?? '';
-        actualHeight.text = userDetails['height'] ?? '';
         actualDesiredWeight.text = userDetails['targetWeight'] ?? '';
+
+        // Convert Weight and Height
+        double weight = double.tryParse(weightString) ?? 0.0;
+        double height = double.tryParse(heightString) ?? 0.0;
+        int age = int.parse(ageString);
+
+        // Perform Formula
+        double bmi = calculateBMI(weight, height);
+        double bmr = calculateBMR(weight, height, age);
+        double proteinR = calculateProteinRequirement(weight);
+
+        actualBMIController.text = bmi.toStringAsFixed(2);
+        actualCalController.text = bmr.toStringAsFixed(2);
+        actualProteinController.text = proteinR.toStringAsFixed(2);
 
         // SORT BMI, CALORIES, PROTEIN, HEIGHT, AGE, GENDER
       });
@@ -58,7 +78,7 @@ class _ProfilePage extends State<ProfilePage>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Edit Profile"),
+        title: const Text("Profile"),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -66,35 +86,42 @@ class _ProfilePage extends State<ProfilePage>
             TextField(
               controller: nameController,
               decoration: const InputDecoration(
-                hintText: "Enter your Name",
+                hintText: "Enter Name: ",
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 6),
+            TextField(
+              controller: ageController,
+              decoration: const InputDecoration(
+                hintText: "Enter Age: ",
+              ),
+            ),
+            const SizedBox(height: 6),
             TextField(
               controller: bioContoller,
               decoration: const InputDecoration(
-                hintText: "Add a Bio",
+                hintText: "Enter Bio: ",
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 6),
             TextField(
               controller: heightControler,
               decoration: const InputDecoration(
-                hintText: "Enter your Height",
+                hintText: "Enter Height: cm",
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 6),
             TextField(
               controller: weightController,
               decoration: const InputDecoration(
-                hintText: "Enter your Current Weight",
+                hintText: "Enter Weight: kg",
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 6),
             TextField(
               controller: desiredWeightController,
               decoration: const InputDecoration(
-                hintText: "Enter your Desired Weight",
+                hintText: "Enter Desired Weight: kg",
               ),
             ),
           ],
@@ -137,6 +164,7 @@ class _ProfilePage extends State<ProfilePage>
   Future<void> saveProfile() async {
     String newName = nameController.text;
     String newBio = bioContoller.text;
+    String newAge = ageController.text;
     String newHeight = heightControler.text;
     String newWeight = weightController.text;
     String newDesiredWeight = desiredWeightController.text;
@@ -149,6 +177,7 @@ class _ProfilePage extends State<ProfilePage>
     UserModel updateUserDetails = UserModel(
       firstName: newName,
       bio: newBio,
+      age: newAge,
       weight: newWeight,
       targetWeight: newDesiredWeight,
       height: newHeight,
@@ -174,6 +203,7 @@ class _ProfilePage extends State<ProfilePage>
   void clear() {
     nameController.clear();
     bioContoller.clear();
+    ageController.clear();
     weightController.clear();
     desiredWeightController.clear();
   }
@@ -186,8 +216,9 @@ class _ProfilePage extends State<ProfilePage>
       vsync: this,
     )..repeat(reverse: true);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
-    actualName.text = 'Name'; // Initial Text States
+    actualName.text = 'Enter A Name'; // Initial Text States
     actualBio.text = 'Enter A Bio';
+    actualAge.text = 'Unknown';
     actualWeight.text = 'Unknown';
     actualDesiredWeight.text = 'Unknown';
     actualBMIController.text = 'Unknown';
@@ -261,7 +292,7 @@ class _ProfilePage extends State<ProfilePage>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 15),
                       const Text(
                         'User Information:',
                         style: TextStyle(
@@ -270,6 +301,7 @@ class _ProfilePage extends State<ProfilePage>
                         ),
                       ),
                       const SizedBox(height: 15),
+                      buildUserDetail('Age', actualAge, Icons.person),
                       buildUserDetail(
                           'Weight', actualWeight, Icons.fitness_center),
                       buildUserDetail(
@@ -284,33 +316,26 @@ class _ProfilePage extends State<ProfilePage>
                           'Recommended Exercise',
                           actualRecommendedExerciseController,
                           Icons.directions_run),
-                      const SizedBox(height: 30),
-                      const Text(
-                        'Heat Map: ',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Navigate to the Heat Map page
-                          Navigator.pushNamed(context, '/heatmap');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple[800],
-                          foregroundColor: Colors.white,
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                        ),
-                        child: const Text('View Heat Map'),
-                      ),
                       const SizedBox(height: 10),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Navigate to the Heat Map page
+                            Navigator.pushNamed(context, '/heatmap');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.purple[800],
+                            foregroundColor: Colors.white,
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 5),
+                          ),
+                          child: const Text('View Heat Map'),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -322,7 +347,7 @@ class _ProfilePage extends State<ProfilePage>
       floatingActionButton: FloatingActionButton(
         onPressed: addUserDetails,
         backgroundColor: Colors.purple,
-        elevation: 5,
+        elevation: 10,
         child: const Icon(Icons.add),
       ),
     );
@@ -343,7 +368,7 @@ class _ProfilePage extends State<ProfilePage>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: Colors.purple[800]),
-          const SizedBox(width: 10),
+          const SizedBox(width: 12),
           Text(
             '$title: ${controller.text}',
             style: const TextStyle(fontSize: 16, color: Colors.purple),

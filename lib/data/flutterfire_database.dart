@@ -40,6 +40,7 @@ class UserModel {
   final String? id;
   final String firstName;
   final String bio;
+  final String age;
   final String weight;
   final String targetWeight;
   final String height;
@@ -48,6 +49,7 @@ class UserModel {
     this.id,
     required this.firstName,
     required this.bio,
+    required this.age,
     required this.weight,
     required this.targetWeight,
     required this.height,
@@ -57,6 +59,7 @@ class UserModel {
     return {
       "firstName": firstName,
       "bio": bio,
+      'age': age,
       "weight": weight,
       "targetWeight": targetWeight,
       'height': height,
