@@ -50,7 +50,7 @@ class _ProfilePage extends State<ProfilePage>
                       child: const CircleAvatar(
                         radius: 50,
                         backgroundImage:
-                            AssetImage('assets/profile_picture.jpg'),
+                            AssetImage('lib/fitnessImage/fitnessLogo.jpeg'),
                         backgroundColor: Colors
                             .white, // Add a background color for a circle avatar
                       ),
