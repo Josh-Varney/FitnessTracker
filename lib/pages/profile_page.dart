@@ -12,6 +12,84 @@ class _ProfilePage extends State<ProfilePage>
   late AnimationController _controller;
   late Animation<double> _animation;
 
+  final nameController = TextEditingController();
+  final bioContoller = TextEditingController();
+  final weightController = TextEditingController();
+  final heightControler = TextEditingController();
+  final desiredWeightController = TextEditingController();
+
+  void addUserDetails() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Edit Profile"),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                hintText: "Enter your Name",
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: bioContoller,
+              decoration: const InputDecoration(
+                hintText: "Add a Bio",
+              ),
+            ),
+            // Add more text fields as needed
+            const SizedBox(height: 16),
+            TextField(
+              controller: weightController,
+              decoration: const InputDecoration(
+                hintText: "Enter your Current Weight",
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: desiredWeightController,
+              decoration: const InputDecoration(
+                hintText: "Enter your Desired Weight",
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          // Save Button
+          MaterialButton(
+            onPressed: saveProfileDetails,
+            child: const Text("Save"),
+          ),
+          // Cancel Button
+          MaterialButton(
+            onPressed: cancelButton,
+            child: const Text("Cancel"),
+          )
+        ],
+      ),
+    );
+  }
+
+  void saveProfileDetails() {
+    Navigator.pop(context);
+    clear();
+  }
+
+  void cancelButton() {
+    Navigator.pop(context);
+    clear();
+  }
+
+  void clear() {
+    nameController.clear();
+    bioContoller.clear();
+    weightController.clear();
+    desiredWeightController.clear();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -95,14 +173,15 @@ class _ProfilePage extends State<ProfilePage>
                         ),
                       ),
                       const SizedBox(height: 15),
-                      buildUserDetail('Weight', '70kg', Icons.fitness_center),
+                      buildUserDetail(
+                          'Weight', 'Unknown', Icons.fitness_center),
                       buildUserDetail('BMI', 'Unknown', Icons.accessibility),
-                      buildUserDetail('Calories Required', '2500',
+                      buildUserDetail('Calories Required', 'Unknown',
                           Icons.local_fire_department),
                       buildUserDetail(
-                          'Protein Required', '120g', Icons.restaurant),
+                          'Protein Required', 'Unknown', Icons.restaurant),
                       buildUserDetail(
-                          'Desired Weight', '85kg', Icons.fitbit_outlined),
+                          'Desired Weight', 'Unknown', Icons.fitbit_outlined),
                       buildUserDetail('Recommended Exercise', 'Running',
                           Icons.directions_run),
                       const SizedBox(height: 30),
@@ -141,9 +220,7 @@ class _ProfilePage extends State<ProfilePage>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your quick action logic here
-        },
+        onPressed: addUserDetails,
         backgroundColor: Colors.purple,
         elevation: 5,
         child: const Icon(Icons.add),

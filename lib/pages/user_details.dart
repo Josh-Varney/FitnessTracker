@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class InputScreen extends StatefulWidget {
-  const InputScreen({super.key});
+class UserDetailsPage extends StatefulWidget {
+  const UserDetailsPage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _InputScreenState createState() => _InputScreenState();
+  _UserDetailsPageState createState() => _UserDetailsPageState();
 }
 
-class _InputScreenState extends State<InputScreen> {
+class _UserDetailsPageState extends State<UserDetailsPage> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();

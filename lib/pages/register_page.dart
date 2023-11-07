@@ -1,3 +1,4 @@
+import 'package:flutter_log/pages/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_log/ui_components/button_forget.dart';
@@ -20,6 +21,12 @@ class _RegisterPage extends State<RegisterPage> {
   final passwordController = TextEditingController();
 
   final confirmPasswordController = TextEditingController();
+
+  void _navigateUserDetailsPage(context) {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => UserDetailsPage())); //Bug
+  }
+
   // Sign User Up
   void signUserUp() async {
     // Loading Circle
@@ -48,6 +55,7 @@ class _RegisterPage extends State<RegisterPage> {
           email: emailController.text,
           password: passwordController.text,
         );
+        //_navigateUserDetailsPage(context);
       } else {
         showErrorMessage("Passwords do not match");
       }
