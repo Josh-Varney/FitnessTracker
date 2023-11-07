@@ -20,6 +20,7 @@ void main() async {
   DatabaseService databaseService = DatabaseService();
 
   UserModel testUser = const UserModel(
+      // Works
       firstName: 'Josh',
       phoneNo: '0582948232',
       weight: '70',
