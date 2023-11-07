@@ -9,11 +9,12 @@ class UserDetailsPage extends StatefulWidget {
 }
 
 class _UserDetailsPageState extends State<UserDetailsPage> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _weightController = TextEditingController();
-  TextEditingController _desiredWeightController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _desiredWeightController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {

@@ -11,7 +11,7 @@ class DatabaseService {
 class UserModel {
   final String? id;
   final String firstName;
-  final String phoneNo;
+  final String bio;
   final String weight;
   final String targetWeight;
   final String height;
@@ -19,7 +19,7 @@ class UserModel {
   const UserModel({
     this.id,
     required this.firstName,
-    required this.phoneNo,
+    required this.bio, //Need to add this to firestore
     required this.weight,
     required this.targetWeight,
     required this.height,
@@ -28,7 +28,7 @@ class UserModel {
   Map<String, dynamic> toJson() {
     return {
       "First Name": firstName,
-      "Phone Number": phoneNo,
+      "Bio": bio,
       "Weight": weight,
       "Target Weight": targetWeight,
       'Height': height,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_log/data/flutterfire_database.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class _ProfilePage extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+
+  // Error Check and Change Physical Properties, Store in Database
 
   final nameController = TextEditingController();
   final bioContoller = TextEditingController();
@@ -40,7 +43,13 @@ class _ProfilePage extends State<ProfilePage>
                 hintText: "Add a Bio",
               ),
             ),
-            // Add more text fields as needed
+            const SizedBox(height: 16),
+            TextField(
+              controller: heightControler,
+              decoration: const InputDecoration(
+                hintText: "Enter your Height",
+              ),
+            ),
             const SizedBox(height: 16),
             TextField(
               controller: weightController,
@@ -71,6 +80,32 @@ class _ProfilePage extends State<ProfilePage>
         ],
       ),
     );
+  }
+
+  Future<void> saveWorkout() async {
+    String newName = nameController.text;
+    String newBio = bioContoller.text;
+    String newHeight = heightControler.text;
+    String newWeight = weightController.text;
+    String newDesiredWeight = desiredWeightController.text;
+
+    // Add this Data to User Details and then Modify Current Properties
+
+    DatabaseService databaseService = DatabaseService();
+
+    UserModel updateUserDetails = UserModel(
+        firstName: newName,
+        bio: newBio,
+        weight: newWeight,
+        targetWeight: newDesiredWeight,
+        height: newHeight);
+
+    await databaseService.storeUserDetails(updateUserDetails);
+
+    //Provider.of<WorkOutData>(context, listen: false).addWorkout(newWorkoutName);
+    // Pop dialog
+    Navigator.pop(context);
+    clear();
   }
 
   void saveProfileDetails() {
