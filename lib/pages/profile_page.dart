@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_log/data/flutterfire_database.dart';
@@ -28,6 +27,10 @@ class _ProfilePage extends State<ProfilePage>
   final actualWeight = TextEditingController();
   final actualHeight = TextEditingController();
   final actualDesiredWeight = TextEditingController();
+  final actualProteinController = TextEditingController();
+  final actualCalController = TextEditingController();
+  final actualBMIController = TextEditingController();
+  final actualRecommendedExerciseController = TextEditingController();
 
   // Grabbing States
   Future<void> loadUserDetails() async {
@@ -39,12 +42,14 @@ class _ProfilePage extends State<ProfilePage>
           await DatabaseService().getUserDetails(uid);
 
       setState(() {
-        // Need to Change this to the text ON THE SCREEN
+        // CHANGES THE STATES ON THE SCREEN
         actualName.text = userDetails['firstName'] ?? '';
         actualBio.text = userDetails['bio'] ?? '';
-        weightController.text = userDetails['weight'] ?? '';
-        heightControler.text = userDetails['height'] ?? '';
-        desiredWeightController.text = userDetails['targetWeight'] ?? '';
+        actualWeight.text = userDetails['weight'] ?? '';
+        actualHeight.text = userDetails['height'] ?? '';
+        actualDesiredWeight.text = userDetails['targetWeight'] ?? '';
+
+        // SORT BMI, CALORIES, PROTEIN, HEIGHT, AGE, GENDER
       });
     }
   }
@@ -183,6 +188,12 @@ class _ProfilePage extends State<ProfilePage>
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
     actualName.text = 'Name'; // Initial Text States
     actualBio.text = 'Enter A Bio';
+    actualWeight.text = 'Unknown';
+    actualDesiredWeight.text = 'Unknown';
+    actualBMIController.text = 'Unknown';
+    actualCalController.text = 'Unknown';
+    actualProteinController.text = 'Unknown';
+    actualRecommendedExerciseController.text = 'Running';
     loadUserDetails();
   }
 
@@ -260,15 +271,18 @@ class _ProfilePage extends State<ProfilePage>
                       ),
                       const SizedBox(height: 15),
                       buildUserDetail(
-                          'Weight', 'Unknown', Icons.fitness_center),
-                      buildUserDetail('BMI', 'Unknown', Icons.accessibility),
-                      buildUserDetail('Calories Required', 'Unknown',
+                          'Weight', actualWeight, Icons.fitness_center),
+                      buildUserDetail(
+                          'BMI', actualBMIController, Icons.accessibility),
+                      buildUserDetail('Calories Required', actualCalController,
                           Icons.local_fire_department),
+                      buildUserDetail('Protein Required',
+                          actualProteinController, Icons.restaurant),
+                      buildUserDetail('Desired Weight', actualDesiredWeight,
+                          Icons.fitbit_outlined),
                       buildUserDetail(
-                          'Protein Required', 'Unknown', Icons.restaurant),
-                      buildUserDetail(
-                          'Desired Weight', 'Unknown', Icons.fitbit_outlined),
-                      buildUserDetail('Recommended Exercise', 'Running',
+                          'Recommended Exercise',
+                          actualRecommendedExerciseController,
                           Icons.directions_run),
                       const SizedBox(height: 30),
                       const Text(
@@ -314,7 +328,8 @@ class _ProfilePage extends State<ProfilePage>
     );
   }
 
-  Widget buildUserDetail(String title, String value, IconData icon) {
+  Widget buildUserDetail(
+      String title, TextEditingController controller, IconData icon) {
     // Bug, need to change text editing controller within this
     return Container(
       padding: const EdgeInsets.all(15),
@@ -330,7 +345,7 @@ class _ProfilePage extends State<ProfilePage>
           Icon(icon, color: Colors.purple[800]),
           const SizedBox(width: 10),
           Text(
-            '$title: $value',
+            '$title: ${controller.text}',
             style: const TextStyle(fontSize: 16, color: Colors.purple),
           ),
         ],
