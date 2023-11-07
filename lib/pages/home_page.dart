@@ -7,7 +7,7 @@ import 'package:flutter_log/pages/work_out_page.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({Key? key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,7 +17,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
     Provider.of<WorkOutData>(context, listen: false).intialiseWorkoutList();
   }
 
@@ -59,12 +58,13 @@ class _HomePageState extends State<HomePage> {
   // Go to Workout Page
   void goToWorkoutPage(String workoutName) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => WorkoutPage(
-            workoutName: workoutName,
-          ),
-        ));
+      context,
+      MaterialPageRoute(
+        builder: (context) => WorkoutPage(
+          workoutName: workoutName,
+        ),
+      ),
+    );
   }
 
   // Save Workout
@@ -73,7 +73,6 @@ class _HomePageState extends State<HomePage> {
     // Add Workout to Workout Data List
     Provider.of<WorkOutData>(context, listen: false).addWorkout(newWorkoutName);
     // Pop dialog
-
     Navigator.pop(context);
     clear();
   }
@@ -89,72 +88,108 @@ class _HomePageState extends State<HomePage> {
     newWorkoutNameController.clear();
   }
 
+  Widget drawerItem(IconData icon, String title, VoidCallback onTap) {
+    return Card(
+      color: Colors.transparent.withOpacity(0),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.white),
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        onTap: onTap,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<WorkOutData>(
-      builder: (context, value, child) => DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-              //title: const Text('Workouts'),
-              ),
-          drawer: Drawer(
-            child: Container(
-              color: Colors.deepPurple[200],
-              child: ListView(
-                children: [
-                  const DrawerHeader(
-                      child: Center(
-                    child: Text(
-                      'L O G O',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  )),
-                  ListTile(
-                    leading: const Icon(Icons.person),
-                    title:
-                        const Text('Profile', style: TextStyle(fontSize: 20)),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const ProfilePage())),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.home),
-                    title:
-                        const Text('About Us', style: TextStyle(fontSize: 20)),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AboutUsPage())),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.home),
-                    title:
-                        const Text('Workouts', style: TextStyle(fontSize: 20)),
-                    onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => HomePage())),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.logout),
-                    title:
-                        const Text('Log Out', style: TextStyle(fontSize: 20)),
-                    onTap: () => signUserOut(),
-                  ),
-                ],
+      builder: (context, value, child) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Workout'),
+          backgroundColor: Colors.deepPurple,
+        ),
+        drawer: Drawer(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.purple, Colors.deepPurple],
               ),
             ),
+            child: ListView(
+              children: [
+                DrawerHeader(
+                  child: Center(
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.purple[700],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          'lib/fitnessImage/fitnessLogo.jpeg',
+                          width: 50,
+                          height: 50,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                drawerItem(Icons.person, 'Profile', () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ProfilePage(),
+                    ),
+                  );
+                }),
+                const Divider(color: Colors.white),
+                drawerItem(Icons.info_outlined, 'About Us', () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AboutUsPage(),
+                    ),
+                  );
+                }),
+                const Divider(color: Colors.white),
+                drawerItem(Icons.heat_pump, 'HeatMap', () {}),
+                const Divider(color: Colors.white),
+                drawerItem(Icons.logout, 'Log Out', () {
+                  signUserOut();
+                }),
+              ],
+            ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: createNewWorkout,
-            child: const Icon(Icons.add),
-          ),
-          body: ListView.builder(
-            itemCount: value.getWorkoutList().length < 15 // Limit size to 8
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: createNewWorkout,
+          backgroundColor: Colors.purple,
+          child: const Icon(Icons.add),
+        ),
+        body: Container(
+          color: Colors.grey[250],
+          child: ListView.builder(
+            itemCount: value.getWorkoutList().length < 15
                 ? value.getWorkoutList().length
                 : 10,
-            itemBuilder: (context, index) => ListTile(
-              title: Text(value.getWorkoutList()[index].name),
-              trailing: IconButton(
-                icon: const Icon(Icons.arrow_forward_ios),
-                onPressed: () =>
-                    goToWorkoutPage(value.getWorkoutList()[index].name),
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: ListTile(
+                  title: Text(
+                    value.getWorkoutList()[index].name,
+                    style: const TextStyle(color: Colors.deepPurple),
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.arrow_forward_ios),
+                    onPressed: () =>
+                        goToWorkoutPage(value.getWorkoutList()[index].name),
+                    color: Colors.purple,
+                  ),
+                ),
               ),
             ),
           ),
