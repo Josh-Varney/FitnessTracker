@@ -1,10 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
-  final firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<void> storeUserDetails(UserModel user) async {
-    await firestore.collection("UserDetails").add(user.toJson());
+  DatabaseService();
+
+  Future<void> storeUserDetails(UserModel user, String uid) async {
+    try {
+      print(uid);
+      await firestore.collection("UserDetails").doc(uid).set(user.toJson());
+      print('User details stored successfully.');
+    } catch (e) {
+      print("Error storing user details: $e");
+    }
+  }
+
+  // Gets data from the database
+  Future<Map<String, dynamic>> getUserDetails(String uid) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await firestore.collection("UserDetails").doc(uid).get();
+
+      if (documentSnapshot.exists) {
+        // Return user details as a Map
+        return documentSnapshot.data()!;
+      } else {
+        // Return an empty Map or handle the case when the document doesn't exist
+        return {};
+      }
+    } catch (e) {
+      print("Error retrieving user details: $e");
+      // Handle errors by returning an empty Map or another default value
+      return {};
+    }
   }
 }
 
@@ -19,7 +47,7 @@ class UserModel {
   const UserModel({
     this.id,
     required this.firstName,
-    required this.bio, //Need to add this to firestore
+    required this.bio,
     required this.weight,
     required this.targetWeight,
     required this.height,
@@ -27,11 +55,11 @@ class UserModel {
 
   Map<String, dynamic> toJson() {
     return {
-      "First Name": firstName,
-      "Bio": bio,
-      "Weight": weight,
-      "Target Weight": targetWeight,
-      'Height': height,
+      "firstName": firstName,
+      "bio": bio,
+      "weight": weight,
+      "targetWeight": targetWeight,
+      'height': height,
     };
   }
 }

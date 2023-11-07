@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_log/data/flutterfire_database.dart';
 
@@ -14,12 +16,38 @@ class _ProfilePage extends State<ProfilePage>
   late Animation<double> _animation;
 
   // Error Check and Change Physical Properties, Store in Database
-
   final nameController = TextEditingController();
   final bioContoller = TextEditingController();
   final weightController = TextEditingController();
   final heightControler = TextEditingController();
   final desiredWeightController = TextEditingController();
+
+  // Actual Text Controllers
+  final actualName = TextEditingController();
+  final actualBio = TextEditingController();
+  final actualWeight = TextEditingController();
+  final actualHeight = TextEditingController();
+  final actualDesiredWeight = TextEditingController();
+
+  // Grabbing States
+  Future<void> loadUserDetails() async {
+    String uid = await getCurrentUserUID();
+
+    if (uid.isNotEmpty) {
+      // Use the DatabaseService to get user details
+      Map<String, dynamic> userDetails =
+          await DatabaseService().getUserDetails(uid);
+
+      setState(() {
+        // Need to Change this to the text ON THE SCREEN
+        actualName.text = userDetails['firstName'] ?? '';
+        actualBio.text = userDetails['bio'] ?? '';
+        weightController.text = userDetails['weight'] ?? '';
+        heightControler.text = userDetails['height'] ?? '';
+        desiredWeightController.text = userDetails['targetWeight'] ?? '';
+      });
+    }
+  }
 
   void addUserDetails() {
     showDialog(
@@ -82,33 +110,53 @@ class _ProfilePage extends State<ProfilePage>
     );
   }
 
-  Future<void> saveWorkout() async {
+  Future<String> getCurrentUserUID() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    try {
+      User? user = _auth.currentUser;
+
+      if (user != null) {
+        return user.uid;
+      } else {
+        return ''; // You may want to handle the case when there is no user
+      }
+    } catch (e) {
+      print('Error: $e');
+      return ''; // Handle errors by returning an empty string or another default value
+    }
+  }
+
+// Query to Retrieve The Data
+
+  Future<void> saveProfile() async {
     String newName = nameController.text;
     String newBio = bioContoller.text;
     String newHeight = heightControler.text;
     String newWeight = weightController.text;
     String newDesiredWeight = desiredWeightController.text;
 
-    // Add this Data to User Details and then Modify Current Properties
+    // Get UID using await
+    String uid = await getCurrentUserUID();
 
     DatabaseService databaseService = DatabaseService();
 
     UserModel updateUserDetails = UserModel(
-        firstName: newName,
-        bio: newBio,
-        weight: newWeight,
-        targetWeight: newDesiredWeight,
-        height: newHeight);
+      firstName: newName,
+      bio: newBio,
+      weight: newWeight,
+      targetWeight: newDesiredWeight,
+      height: newHeight,
+    );
 
-    await databaseService.storeUserDetails(updateUserDetails);
+    await databaseService.storeUserDetails(updateUserDetails, uid);
 
-    //Provider.of<WorkOutData>(context, listen: false).addWorkout(newWorkoutName);
-    // Pop dialog
     Navigator.pop(context);
     clear();
   }
 
   void saveProfileDetails() {
+    saveProfile();
     Navigator.pop(context);
     clear();
   }
@@ -133,6 +181,9 @@ class _ProfilePage extends State<ProfilePage>
       vsync: this,
     )..repeat(reverse: true);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+    actualName.text = 'Name'; // Initial Text States
+    actualBio.text = 'Enter A Bio';
+    loadUserDetails();
   }
 
   @override
@@ -169,18 +220,18 @@ class _ProfilePage extends State<ProfilePage>
                       ),
                     ),
                     const SizedBox(height: 2),
-                    const Text(
-                      'Your Name',
-                      style: TextStyle(
+                    Text(
+                      actualName.text,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      'Your Bio or Tagline',
-                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    Text(
+                      actualBio.text,
+                      style: const TextStyle(fontSize: 14, color: Colors.white),
                     ),
                     const SizedBox(height: 10),
                   ],
@@ -264,6 +315,7 @@ class _ProfilePage extends State<ProfilePage>
   }
 
   Widget buildUserDetail(String title, String value, IconData icon) {
+    // Bug, need to change text editing controller within this
     return Container(
       padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.symmetric(vertical: 5),

@@ -1,3 +1,4 @@
+import 'package:flutter_log/data/flutterfire_database.dart';
 import 'package:flutter_log/pages/user_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +22,6 @@ class _RegisterPage extends State<RegisterPage> {
   final passwordController = TextEditingController();
 
   final confirmPasswordController = TextEditingController();
-
-  void _navigateUserDetailsPage(context) {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => UserDetailsPage())); //Bug
-  }
 
   // Sign User Up
   void signUserUp() async {
@@ -51,11 +47,10 @@ class _RegisterPage extends State<RegisterPage> {
 
     try {
       if (passwordController.text == confirmPasswordController.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
-        //_navigateUserDetailsPage(context);
       } else {
         showErrorMessage("Passwords do not match");
       }
