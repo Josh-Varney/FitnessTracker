@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_log/auth/googleSignIn.dart';
 import 'package:flutter_log/data/workout_data.dart';
 import 'package:flutter_log/pages/about_us_page.dart';
 import 'package:flutter_log/pages/profile_page.dart';

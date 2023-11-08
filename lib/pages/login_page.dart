@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_log/auth/googleSignIn.dart';
 import 'package:flutter_log/ui_components/button_forget.dart';
 import 'package:flutter_log/ui_components/login_tile.dart';
 import 'package:flutter_log/ui_components/logo_tile.dart';
@@ -17,9 +18,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   // Text Editing Controller
+
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
+
+  // final GoogleSignInHandler _googleSignInHandler = GoogleSignInHandler();
+  // Google Sign In Function
 
   // Sign User In
   void signUserIn() async {
@@ -161,16 +166,20 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 50),
                 // Google + Apple sign in buttons
 
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Google Button
-                    LogTile(imagePath: 'lib/fitnessImage/GoogleLogo.png'),
+                    LogTile(
+                        onTap: () {},
+                        imagePath: 'lib/fitnessImage/GoogleLogo.png'),
 
-                    SizedBox(width: 25),
+                    const SizedBox(width: 25),
 
                     //Apple Button
-                    LogTile(imagePath: 'lib/fitnessImage/AppleLogo.png')
+                    LogTile(
+                        onTap: () => () {},
+                        imagePath: 'lib/fitnessImage/AppleLogo.png')
                   ],
                 ),
 

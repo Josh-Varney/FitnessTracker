@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_log/data/hive_database.dart';
 import 'package:flutter_log/models/exercise.dart';

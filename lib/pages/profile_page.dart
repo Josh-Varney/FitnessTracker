@@ -216,6 +216,7 @@ class _ProfilePage extends State<ProfilePage>
       vsync: this,
     )..repeat(reverse: true);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+    loadUserDetails();
     actualName.text = 'Enter A Name'; // Initial Text States
     actualBio.text = 'Enter A Bio';
     actualAge.text = 'Unknown';
@@ -225,7 +226,6 @@ class _ProfilePage extends State<ProfilePage>
     actualCalController.text = 'Unknown';
     actualProteinController.text = 'Unknown';
     actualRecommendedExerciseController.text = 'Running';
-    loadUserDetails();
   }
 
   @override
