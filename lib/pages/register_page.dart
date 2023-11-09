@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_log/auth/appleSignIn.dart';
 import 'package:flutter_log/auth/googleSignIn.dart';
+import 'package:flutter_log/pages/home_page.dart';
 import 'package:flutter_log/ui_components/button_forget.dart';
 import 'package:flutter_log/ui_components/login_tile.dart';
 import 'package:flutter_log/ui_components/logo_tile.dart';
@@ -23,6 +27,18 @@ class _RegisterPage extends State<RegisterPage> {
   final confirmPasswordController = TextEditingController();
 
   final GoogleSignInHandler _googleSignInHandler = GoogleSignInHandler();
+
+  final AppleSignInHandler _appleSignInHandler = AppleSignInHandler();
+
+  void showOSError() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            title: Text("Android Users: Sign In with Google"),
+          );
+        });
+  }
 
   // Sign User Up
   void signUserUp() async {
@@ -172,7 +188,26 @@ class _RegisterPage extends State<RegisterPage> {
 
                     //Apple Button
                     LogTile(
-                        onTap: () {},
+                        onTap: () async => {
+                              if (Platform.isIOS)
+                                {
+                                  await _appleSignInHandler
+                                      .handleSignIn(context),
+                                  if (FirebaseAuth.instance.currentUser != null)
+                                    {
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomePage(),
+                                        ),
+                                      )
+                                    }
+                                }
+                              else
+                                {showOSError()}
+                            },
                         imagePath: 'lib/fitnessImage/AppleLogo.png')
                   ],
                 ),
