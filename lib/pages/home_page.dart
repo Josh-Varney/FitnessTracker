@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_log/auth/googleSignIn.dart';
 import 'package:flutter_log/data/workout_data.dart';
 import 'package:flutter_log/pages/about_us_page.dart';
+import 'package:flutter_log/pages/auth_page.dart';
+import 'package:flutter_log/pages/login_page.dart';
 import 'package:flutter_log/pages/profile_page.dart';
 import 'package:flutter_log/pages/work_out_page.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,11 +24,29 @@ class _HomePageState extends State<HomePage> {
     Provider.of<WorkOutData>(context, listen: false).intialiseWorkoutList();
   }
 
+  final GoogleSignInHandler googleSignInHandler = GoogleSignInHandler();
+
   final user = FirebaseAuth.instance.currentUser!;
 
   // Sign User Out
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
+  void signUserOut(BuildContext context) {
+    try {
+      if (FirebaseAuth.instance.currentUser != null) {
+        FirebaseAuth.instance.signOut();
+        googleSignInHandler.signOut();
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const AuthPage()), // Replace with your login page
+          (Route<dynamic> route) => false,
+        );
+        print('Sign Out');
+      }
+    } catch (e) {
+      print('Error signing out: $e');
+    }
   }
 
   // Text Controller
@@ -155,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                 drawerItem(Icons.heat_pump, 'HeatMap', () {}),
                 const Divider(color: Colors.white),
                 drawerItem(Icons.logout, 'Log Out', () {
-                  signUserOut();
+                  signUserOut(context);
                 }),
               ],
             ),

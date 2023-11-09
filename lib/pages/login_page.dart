@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final passwordController = TextEditingController();
 
-  // final GoogleSignInHandler _googleSignInHandler = GoogleSignInHandler();
+  final GoogleSignInHandler _googleSignInHandler = GoogleSignInHandler();
   // Google Sign In Function
 
   // Sign User In
@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     // Google Button
                     LogTile(
-                        onTap: () {},
+                        onTap: () => _googleSignInHandler.handleSignIn(context),
                         imagePath: 'lib/fitnessImage/GoogleLogo.png'),
 
                     const SizedBox(width: 25),

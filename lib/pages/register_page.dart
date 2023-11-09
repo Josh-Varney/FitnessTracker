@@ -22,7 +22,7 @@ class _RegisterPage extends State<RegisterPage> {
 
   final confirmPasswordController = TextEditingController();
 
-  // final GoogleSignInHandler _googleSignInHandler = GoogleSignInHandler();
+  final GoogleSignInHandler _googleSignInHandler = GoogleSignInHandler();
 
   // Sign User Up
   void signUserUp() async {
@@ -41,14 +41,14 @@ class _RegisterPage extends State<RegisterPage> {
           context: context,
           builder: (context) {
             return const AlertDialog(
-              title: Text("Incorrect Email Address"),
+              title: Text("Incorrect Email Address or Already Signed Up"),
             );
           });
     }
 
     try {
       if (passwordController.text == confirmPasswordController.text) {
-        FirebaseAuth.instance.createUserWithEmailAndPassword(
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
@@ -165,7 +165,7 @@ class _RegisterPage extends State<RegisterPage> {
                   children: [
                     // Google Button
                     LogTile(
-                        onTap: () {},
+                        onTap: () => _googleSignInHandler.handleSignIn(context),
                         imagePath: 'lib/fitnessImage/GoogleLogo.png'),
 
                     const SizedBox(width: 25),
