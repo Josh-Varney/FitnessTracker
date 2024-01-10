@@ -4,10 +4,8 @@ import 'package:flutter_log/auth/googleSignIn.dart';
 import 'package:flutter_log/data/workout_data.dart';
 import 'package:flutter_log/pages/about_us_page.dart';
 import 'package:flutter_log/pages/auth_page.dart';
-import 'package:flutter_log/pages/login_page.dart';
 import 'package:flutter_log/pages/profile_page.dart';
 import 'package:flutter_log/pages/work_out_page.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -42,7 +40,6 @@ class _HomePageState extends State<HomePage> {
                   const AuthPage()), // Replace with your login page
           (Route<dynamic> route) => false,
         );
-        print('Sign Out');
       }
     } catch (e) {
       print('Error signing out: $e');
@@ -60,6 +57,7 @@ class _HomePageState extends State<HomePage> {
         title: const Text("Create New Workout"),
         content: TextField(
           controller: newWorkoutNameController,
+          decoration: const InputDecoration(hintText: 'Workout Name:'),
         ),
         actions: [
           // Save Button
@@ -92,6 +90,13 @@ class _HomePageState extends State<HomePage> {
   // Save Workout
   void saveWorkout() {
     String newWorkoutName = newWorkoutNameController.text;
+
+    if (newWorkoutName.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please Enter a Workout Name:')),
+      );
+      return;
+    }
     // Add Workout to Workout Data List
     Provider.of<WorkOutData>(context, listen: false).addWorkout(newWorkoutName);
     // Pop dialog
@@ -136,7 +141,7 @@ class _HomePageState extends State<HomePage> {
           child: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.purple, Colors.deepPurple],
+                colors: [Colors.deepPurpleAccent, Colors.blue],
               ),
             ),
             child: ListView(

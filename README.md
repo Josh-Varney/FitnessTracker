@@ -1,17 +1,11 @@
-# flutter_log
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 # FitnessTracker
+ - Configurations:
+   - Flutter SDK Installation (Latest Version)
+   - VSCode or Intellij IDE
+   - Emulator: Pixel 7 API 30 (Download using Android Studio)
+   - Ensure Stable Connectivity
+   - Target Platform (Anroid Studio to Emulate an Android Device)
+   - Firebase API Key (More details in firebase_options.dart)(AIzaSyAI8K2u3pfF6EpO-zmitUEsDgJiyoYYoWk)\
+   - To test Apple Sign In and Google Sign In, will require an account for both services. 
+   - Run flutter application though main.dart (run using main() function) whilst having Emulator available and connected to IDE
+   - Pubspec Yaml list dependencies of the project (libraries, packages, images (assets)) --> All are up-to-date

@@ -11,6 +11,7 @@ class HiveDatabase {
   bool previousDataExists() {
     if (_myBox.isEmpty) {
       print('Previous Data Non-Existent');
+      // Potential Extension with an upcoming HeatMap
       _myBox.put("START_DATE", todaysDateYYYYMMDD());
       return false;
     } else {

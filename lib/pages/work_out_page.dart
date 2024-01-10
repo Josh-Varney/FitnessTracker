@@ -16,7 +16,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
   // CheckBox was Tapped
   void onCheckBoxChanged(String workoutName, String exerciseName) {
+    // Obtains an instance of the WorkOutData
     Provider.of<WorkOutData>(context, listen: false)
+        // Calls check off exercise
         .checkOffExercise(workoutName, exerciseName);
   }
 
@@ -36,18 +38,21 @@ class _WorkoutPageState extends State<WorkoutPage> {
               // Exercise Name
               TextField(
                 controller: exerciseNameController,
+                decoration: const InputDecoration(hintText: 'Exercise Name:'),
               ),
               // Weight
               TextField(
                 controller: weightController,
+                decoration: const InputDecoration(hintText: 'Weight:'),
               ),
               // Reps
               TextField(
-                controller: repsController,
-              ),
+                  controller: repsController,
+                  decoration: const InputDecoration(hintText: 'Reps:')),
               // Sets
               TextField(
                 controller: setsController,
+                decoration: const InputDecoration(hintText: 'Sets:'),
               ),
             ],
           ),
@@ -72,6 +77,32 @@ class _WorkoutPageState extends State<WorkoutPage> {
     String weight = weightController.text;
     String reps = repsController.text;
     String sets = setsController.text;
+
+    // Same name issue: Get All of the Workout Names, Iterate through them
+    // Data type in input
+    if (newExerciseName.isEmpty ||
+        weight.isEmpty ||
+        reps.isEmpty ||
+        sets.isEmpty ||
+        weight == '0' ||
+        reps == '0') {
+      if (newExerciseName.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please Enter a Exercise Name:')),
+        );
+        return;
+      } else if (weight.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please Enter a Weight')));
+      } else if (reps.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please Enter a Rep Count:')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please Enter a Set Count')));
+      }
+      return;
+    }
     // Add Workout to Workout Data List
     Provider.of<WorkOutData>(context, listen: false).addExercise(
       widget.workoutName,

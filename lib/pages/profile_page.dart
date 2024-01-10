@@ -160,7 +160,7 @@ class _ProfilePage extends State<ProfilePage>
   }
 
 // Query to Retrieve The Data
-
+// Need to Fix The Pop Context for The Save Button
   Future<void> saveProfile() async {
     String newName = nameController.text;
     String newBio = bioContoller.text;
@@ -169,24 +169,55 @@ class _ProfilePage extends State<ProfilePage>
     String newWeight = weightController.text;
     String newDesiredWeight = desiredWeightController.text;
 
-    // Get UID using await
-    String uid = await getCurrentUserUID();
+    if (newName.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please Enter a Name:')),
+      );
+      return;
+    } else if (newBio.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please Enter a Bio')),
+      );
+      return;
+    } else if (newAge.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please Enter a Age')),
+      );
+      return;
+    } else if (newHeight.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please Enter a Height')),
+      );
+      return;
+    } else if (newWeight.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please Enter a Weight')),
+      );
+      return;
+    } else if (newDesiredWeight.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please Enter a Desired Weight')));
+      return;
+    } else {
+      // Get UID using await
+      String uid = await getCurrentUserUID();
 
-    DatabaseService databaseService = DatabaseService();
+      DatabaseService databaseService = DatabaseService();
 
-    UserModel updateUserDetails = UserModel(
-      firstName: newName,
-      bio: newBio,
-      age: newAge,
-      weight: newWeight,
-      targetWeight: newDesiredWeight,
-      height: newHeight,
-    );
+      UserModel updateUserDetails = UserModel(
+        firstName: newName,
+        bio: newBio,
+        age: newAge,
+        weight: newWeight,
+        targetWeight: newDesiredWeight,
+        height: newHeight,
+      );
 
-    await databaseService.storeUserDetails(updateUserDetails, uid);
+      await databaseService.storeUserDetails(updateUserDetails, uid);
 
-    Navigator.pop(context);
-    clear();
+      Navigator.pop(context);
+      clear();
+    }
   }
 
   void saveProfileDetails() {
