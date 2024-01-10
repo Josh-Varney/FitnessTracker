@@ -43,7 +43,9 @@
       - user_details : form for profile page
       - work_out_page : form for the main page (Exercise Details or Workout Details)
 
-    - ui_components
-      - firebase_options : configurations for firebase API
-      - main : runs the application and page to designate the  user initially
+    - ui_components:
+      - UI features for reducing complexities for code page
+    
+    - firebase_options : configurations for firebase API
+    - main : runs the application and page to designate the  user initially
 
