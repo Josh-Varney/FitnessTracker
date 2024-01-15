@@ -6,9 +6,9 @@ import 'package:flutter_log/models/workout.dart';
 class WorkOutData extends ChangeNotifier {
   // Contains list of different workouts
 
-  final db = HiveDatabase();
+  final dataBase = HiveDatabase();
 
-  List<Workout> workoutList = [
+  List<Workout> workoutObj = [
     Workout(
       name: "Upper Body",
       exercises: [
@@ -37,31 +37,31 @@ class WorkOutData extends ChangeNotifier {
 
   // Database Load up if previous DATA
   void intialiseWorkoutList() {
-    if (db.previousDataExists()) {
-      workoutList = db.readFromDatabase();
+    if (dataBase.previousDataExists()) {
+      workoutObj = dataBase.readFromDatabase();
     } else {
-      db.saveToDatabase(workoutList);
+      dataBase.saveToDatabase(workoutObj);
     }
   }
 
   // Get the list of different
-  List<Workout> getWorkoutList() => workoutList;
+  List<Workout> getWorkoutList() => workoutObj;
 
   // Get the length of a given workout
   int numberOfExercisesInWorkout(String workoutName) {
-    Workout relevantWorkout = getRelevantWorkout(workoutName);
-    return relevantWorkout.exercises.length;
+    Workout currentWorkout = getRelevantWorkout(workoutName);
+    return currentWorkout.exercises.length;
   }
 
   // Add a workout
   void addWorkout(String name) {
-    workoutList.add(Workout(name: name, exercises: []));
+    workoutObj.add(Workout(name: name, exercises: []));
 
     notifyListeners();
 
-    print(workoutList); //Instances of Workouts in
+    print(workoutObj); //Instances of Workouts in
     // Save to Workouts to DB
-    db.saveToDatabase(workoutList);
+    dataBase.saveToDatabase(workoutObj);
   }
 
   // Add an Exercise to a workout
@@ -69,50 +69,50 @@ class WorkOutData extends ChangeNotifier {
       String reps, String sets) {
     //CHANFE
     // Find Relevelant Workout
-    Workout relevantWorkout = getRelevantWorkout(workoutName);
+    Workout currentWorkout = getRelevantWorkout(workoutName);
 
-    relevantWorkout.exercises.add(Exercise(
+    currentWorkout.exercises.add(Exercise(
         name: exerciseName,
         weight: weight,
         reps: reps,
         sets: sets,
         isCompleted: false)); //CHANGE
 
-    print(relevantWorkout.exercises); // All Exercises in Workouts
+    print(currentWorkout.exercises); // All Exercises in Workouts
 
     notifyListeners();
 
     // Save to Database
-    db.saveToDatabase(workoutList);
+    dataBase.saveToDatabase(workoutObj);
   }
 
   // Check off Exercise
   void checkOffExercise(String workoutName, String exerciseName) {
-    Exercise relevantExercise = getRelevantExercise(workoutName, exerciseName);
+    Exercise currentExercise = getRelevantExercise(workoutName, exerciseName);
     // Check off boolean
     // Can check on and off
-    relevantExercise.isCompleted = !relevantExercise.isCompleted;
+    currentExercise.isCompleted = !currentExercise.isCompleted;
 
     notifyListeners();
 
     // Save to DB
-    db.saveToDatabase(workoutList);
+    dataBase.saveToDatabase(workoutObj);
   }
   // Get Length of a given workout
 
   Workout getRelevantWorkout(String workoutName) {
-    Workout relevelantWorkout =
-        workoutList.firstWhere((workout) => workout.name == workoutName);
-    return relevelantWorkout;
+    Workout currentWorkout =
+        workoutObj.firstWhere((workout) => workout.name == workoutName);
+    return currentWorkout;
   }
 
   // Return relevant excercise object, given a workout name and exercise name
   Exercise getRelevantExercise(String workoutName, String exerciseName) {
     // Find Relevant Workout
-    Workout relevantWorkout = getRelevantWorkout(workoutName);
+    Workout currentWorkout = getRelevantWorkout(workoutName);
 
     // Find Relevant Exercise
-    Exercise relevantExercise = relevantWorkout.exercises
+    Exercise relevantExercise = currentWorkout.exercises
         .firstWhere((exercise) => exercise.name == exerciseName);
 
     return relevantExercise;

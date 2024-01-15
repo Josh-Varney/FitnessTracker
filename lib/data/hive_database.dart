@@ -27,8 +27,8 @@ class HiveDatabase {
 
   // Write Data
   void saveToDatabase(List<Workout> workouts) {
-    final workoutList = convertObjectToWorkoutList(workouts);
-    final exerciseList = convertObjectToExerciseList(workouts);
+    final list_Workouts = convertObjectToWorkoutList(workouts);
+    final list_Exercises = convertObjectToExerciseList(workouts);
 
     if (exerciseCompleted(workouts)) {
       _myBox.put("COMPLETION_STATUS_${todaysDateYYYYMMDD()}", 1);
@@ -37,8 +37,8 @@ class HiveDatabase {
     }
 
     // Save into Hive
-    _myBox.put("WORKOUTS", workoutList);
-    _myBox.put("EXERCISES", exerciseList);
+    _myBox.put("WORKOUTS", list_Workouts);
+    _myBox.put("EXERCISES", list_Exercises);
   }
 
   // Read Data, and return a list of workouts
