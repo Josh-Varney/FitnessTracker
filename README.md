@@ -7,6 +7,7 @@
    - Ensure Stable Connectivity
    - Target Platform (Anroid Studio to Emulate an Android Device)
    - Firebase API Key (More details in firebase_options.dart)(AIzaSyAI8K2u3pfF6EpO-zmitUEsDgJiyoYYoWk)\
+   - Flutter pub get (Get dependencies of the project), this would have been flutter cleaned before to reduce file size.
    - To test Apple Sign In and Google Sign In, will require an account for both services. 
    - Run flutter application though main.dart (run using main() function) whilst having Emulator available and connected to IDE
    - Pubspec Yaml list dependencies of the project (libraries, packages, images (assets)) --> All are up-to-date
