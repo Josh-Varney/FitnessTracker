@@ -10,6 +10,7 @@
    - To test Apple Sign In and Google Sign In, will require an account for both services. 
    - Run flutter application though main.dart (run using main() function) whilst having Emulator available and connected to IDE
    - Pubspec Yaml list dependencies of the project (libraries, packages, images (assets)) --> All are up-to-date
+   - Please open .pdf files in word document or google docs.
 
   - Project Breakdown (lib folder): 
     - Auth
