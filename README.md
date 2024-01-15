@@ -1,4 +1,5 @@
 # FitnessTracker
+- GitHub Link: https://github.com/Josh-Varney/FitnessTracker
  - Configurations:
    - Flutter SDK Installation (Latest Version)
    - VSCode or Intellij IDE
