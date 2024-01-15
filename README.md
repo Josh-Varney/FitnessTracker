@@ -10,7 +10,7 @@
    - Run flutter application though main.dart (run using main() function) whilst having Emulator available and connected to IDE
    - Pubspec Yaml list dependencies of the project (libraries, packages, images (assets)) --> All are up-to-date
 
-  - Project Breakdown:
+  - Project Breakdown (lib folder): 
     - Auth
       - Google Sign In handler functions 
       - Apple Sign In handler functions
@@ -45,6 +45,12 @@
 
     - ui_components:
       - UI features for reducing complexities for code page
+
+    - initial_design+user_case (To be Viewed):
+      - Consists of pdf file for the application project
+
+    - initial_ideas (To be Viewed):
+      - Consists of pdf file for the application project 
     
     - firebase_options : configurations for firebase API
     - main : runs the application and page to designate the  user initially
